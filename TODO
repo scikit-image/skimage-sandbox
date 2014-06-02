@@ -2,4 +2,5 @@
 
 # # Creating containers, listing them works well
 # Figure out how do i write to the STDIN of some process which is waiting for
-# input and similarly get the output back from STDOUT, all this via the REMOTE API.
+# input after we've created the container and launched it inside the same, also
+# get the output back from STDOUT, all this via the REMOTE API.
