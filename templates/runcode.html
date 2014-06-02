@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+	<head> 
+	    <title>Run Code</title>
+        <script type=text/javascript src="{{ url_for('static', filename='jq-min.js') }}"></script>
+        <script type=text/javascript src="{{ url_for('static', filename='submit.js') }}"></script>
+	</head>
+    <body>
+
+        <h2> input: </h2>
+        <textarea id="code" rows="20" cols="100"></textarea>
+        <h2> output: </h2>
+        <textarea id="result"></textarea>
+        <br/>
+        <input id="runcode" type="submit">
+    </body>
+</html>
+
