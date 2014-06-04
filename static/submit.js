@@ -1,4 +1,5 @@
 $(function(){
+	$('#loading').hide()
 
 	function codetoJSON(code){
 		return JSON.stringify({'data': code});
@@ -12,6 +13,8 @@ $(function(){
 	$('#runcode').bind('click', function(){
 		// debug
 		console.log('detect click');
+		
+		$('#loading').show();
 		code = $('#code').val();
 		jcode = codetoJSON(code)
 		// console.log(jcode);
@@ -25,6 +28,7 @@ $(function(){
 		    dataType: 'json',
 		    url: '/runcode',
 		    success: function (e) {
+		    	$('#loading').hide();
 		        displayoutput(e);
 		    }
 		});
