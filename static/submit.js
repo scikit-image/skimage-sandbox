@@ -7,6 +7,8 @@ $(function(){
 
 	function displayoutput(output){
 		output = output['result'];
+		// output is a key, value pair of filename: uuencoded content
+		output = JSON.stringify(output)
 		$('#result').val(output);
 	}
 
