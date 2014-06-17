@@ -11,7 +11,7 @@ print a+b;
 """
 
 # escaping the newline
-sample_code_file = """import time;
+sample_code_file_old = """import time;
 
 import shutil;
 
@@ -36,10 +36,58 @@ out.close();
 shutil.copyfile('output.txt', 'anotheroutput.txt');
 """
 
+# skimage code
+sample_code_file = """
+import matplotlib
+matplotlib.use('Agg')
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from skimage.morphology import convex_hull_image
+
+from matplotlib import _pylab_helpers
+
+image = np.array(
+    [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 1, 0, 0, 0, 0],
+     [0, 0, 0, 1, 0, 1, 0, 0, 0],
+     [0, 0, 1, 0, 0, 0, 1, 0, 0],
+     [0, 1, 0, 0, 0, 0, 0, 1, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0]], dtype=float)
+
+original_image = np.copy(image)
+
+chull = convex_hull_image(image)
+image[chull] += 1
+# image is now:
+#[[ 0.  0.  0.  0.  0.  0.  0.  0.  0.]
+# [ 0.  0.  0.  0.  2.  0.  0.  0.  0.]
+# [ 0.  0.  0.  2.  1.  2.  0.  0.  0.]
+# [ 0.  0.  2.  1.  1.  1.  2.  0.  0.]
+# [ 0.  2.  1.  1.  1.  1.  1.  2.  0.]
+# [ 0.  0.  0.  0.  0.  0.  0.  0.  0.]]
+
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 6))
+ax1.set_title('Original picture')
+ax1.imshow(original_image, cmap=plt.cm.gray, interpolation='nearest')
+ax2.set_title('Transformed picture')
+ax2.imshow(image, cmap=plt.cm.gray, interpolation='nearest')
+
+dpi = 80
+
+fig_managers = _pylab_helpers.Gcf.get_all_fig_managers()
+for idx, figman in enumerate(fig_managers):
+  figman.canvas.figure.savefig('image{0}.png'.format(idx), dpi=80)
+
+plt.show()
+"""
+
 list_files_code = """import os
 
 for file in os.listdir("."):
-    if file.endswith(".txt"):
+    if file.endswith(".png"):
         print file;
 """
 
@@ -47,10 +95,12 @@ for file in os.listdir("."):
 socket='unix://var/run/docker.sock'
 version='1.11'
 timeout=10
-image='fedora'
+# image='fedora'
+image='docker-skimage'
 
 # DEBUG 
 # print "Create Client"
+import pdb
 c = docker.Client(base_url=socket, version=version, timeout=timeout)
 
 # removed parameter memswap_limit, present in docker-py REAMDE.
@@ -72,6 +122,7 @@ if container_id is None:
 # originally present in docker-py README. 
 # ERROR - unexpected keyword argument
 # TODO - verify
+pdb.set_trace()
 start = c.start(container, binds=None, port_bindings=None, lxc_conf=None,
         publish_all_ports=False, links=None, privileged=False,)
 
@@ -82,11 +133,10 @@ handle = subprocess.Popen(['docker', 'attach', container_id], stdin=subprocess.P
 # Separate STDOUT and STDERR
 out, err = handle.communicate(sample_code_file);
 
-print out,
+print out
 
 ## Travel the docker filesystem default directory for files of our interest
-start = c.start(container, binds=None, port_bindings=None, lxc_conf=None,
-        publish_all_ports=False, links=None, privileged=False,)
+start = c.restart(container)
 
 # Generate Handle for accessing the child's streams
 handle = subprocess.Popen(['docker', 'attach', container_id], stdin=subprocess.PIPE,
@@ -123,7 +173,7 @@ for f in filelist:
 
     finally:
       pass
-  pdb.set_trace()
+  # pdb.set_trace()
 
 
 print out,

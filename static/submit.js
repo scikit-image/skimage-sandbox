@@ -7,9 +7,17 @@ $(function(){
 
 	function displayoutput(output){
 		output = output['result'];
+		imagemeta = 'data:image/png;base64,'
 		// output is a key, value pair of filename: uuencoded content
-		output = JSON.stringify(output)
-		$('#result').val(output);
+		// output = JSON.stringify(output)
+		// TODO: it loads the last generated image into the outputimage tag
+		// that needs to be changed
+		for (var key in output){
+			image = output[key];
+			image = imagemeta + image;
+			$('#outputimage').attr('src', image);
+		}
+		$('#result').val("It works!");
 	}
 
 	$('#runcode').bind('click', function(){
