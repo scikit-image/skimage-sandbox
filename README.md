@@ -1,6 +1,8 @@
 Stuff you need to have preinstalled -
 ** Docker - http://docs.docker.com/installation/
 ** Flask - http://flask.pocoo.org/docs/installation/
+** docker-py - https://github.com/dotcloud/docker-py (Python API for docker)
+   `pip install docker-py` should work.
 
 An install of Flask in the virtualenv works fine too.
 
