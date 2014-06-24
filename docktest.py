@@ -2,6 +2,8 @@
 import docker
 import subprocess
 
+import base64
+
 sample_code = """import time;
 
 a = 2;
@@ -169,6 +171,9 @@ for f in filelist:
       tarf = tarfile.TarFile(fileobj=filo)
       fcontent = tarf.extractfile(f).read()
       fcencode = fcontent.encode("uu")
+      fcbase64 = base64.b64encode(fcontent)
+      # 15351
+      # 14832
       break
 
     finally:

@@ -14,7 +14,6 @@ import StringIO
 socket='unix://var/run/docker.sock'
 version='1.11'
 timeout=10
-image='fedora'
 image='docker-skimage'
 
 # code to fetch files written as png
