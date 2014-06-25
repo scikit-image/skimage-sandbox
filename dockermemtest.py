@@ -14,6 +14,63 @@ import resource
 print resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
 """
 
+# to check standalone usage
+empty_code = """import resource
+print resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+"""
+
+# skimage code
+sample_code_file = """
+import matplotlib
+matplotlib.use('Agg')
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from skimage.morphology import convex_hull_image
+
+from matplotlib import _pylab_helpers
+
+image = np.array(
+    [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 1, 0, 0, 0, 0],
+     [0, 0, 0, 1, 0, 1, 0, 0, 0],
+     [0, 0, 1, 0, 0, 0, 1, 0, 0],
+     [0, 1, 0, 0, 0, 0, 0, 1, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0]], dtype=float)
+
+original_image = np.copy(image)
+
+chull = convex_hull_image(image)
+image[chull] += 1
+# image is now:
+#[[ 0.  0.  0.  0.  0.  0.  0.  0.  0.]
+# [ 0.  0.  0.  0.  2.  0.  0.  0.  0.]
+# [ 0.  0.  0.  2.  1.  2.  0.  0.  0.]
+# [ 0.  0.  2.  1.  1.  1.  2.  0.  0.]
+# [ 0.  2.  1.  1.  1.  1.  1.  2.  0.]
+# [ 0.  0.  0.  0.  0.  0.  0.  0.  0.]]
+
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 6))
+ax1.set_title('Original picture')
+ax1.imshow(original_image, cmap=plt.cm.gray, interpolation='nearest')
+ax2.set_title('Transformed picture')
+ax2.imshow(image, cmap=plt.cm.gray, interpolation='nearest')
+
+dpi = 80
+
+fig_managers = _pylab_helpers.Gcf.get_all_fig_managers()
+for idx, figman in enumerate(fig_managers):
+  figman.canvas.figure.savefig('image{0}.png'.format(idx), dpi=80)
+
+plt.show()
+
+import resource
+print resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+"""
+
+
 # CONSTANTS
 socket='unix://var/run/docker.sock'
 version='1.12'
@@ -33,7 +90,7 @@ c = docker.Client(base_url=socket, version=version, timeout=timeout)
 # the code in sample_code returns in kilobytes.
 # mem_limit accepts values in bytes, for ex - this container has 5 MB
 container = c.create_container(image, command='python', hostname=None, user=None,
-                   detach=False, stdin_open=True, tty=False, mem_limit=5242880,
+                   detach=False, stdin_open=True, tty=False, mem_limit=52428800,
                    ports=None, environment=None, dns=None, volumes=None,
                    volumes_from=None, network_disabled=False, name=None,
                    entrypoint=None, cpu_shares=None, working_dir=None,)
@@ -57,7 +114,7 @@ handle = subprocess.Popen(['docker', 'attach', container_id], stdin=subprocess.P
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
 
 # Separate STDOUT and STDERR
-out, err = handle.communicate(sample_code);
+out, err = handle.communicate(empty_code);
 
 print out, err
 
