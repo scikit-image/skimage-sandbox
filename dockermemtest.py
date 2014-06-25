@@ -5,9 +5,10 @@ import subprocess
 import base64
 
 # Code to test MEM usage. Expected usage is ~208 Megabytes
-sample_code = """testlist = []
-for i in range(0,5000000):
-  testlist.append('thisisarandomstring')
+sample_code = """
+a = []
+for i in range(0, 100000):
+      a.append('abcdefgh')
 
 import resource
 print resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
@@ -15,7 +16,7 @@ print resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
 
 # CONSTANTS
 socket='unix://var/run/docker.sock'
-version='1.11'
+version='1.12'
 timeout=10
 # image='fedora'
 image='docker-skimage'
@@ -29,12 +30,10 @@ c = docker.Client(base_url=socket, version=version, timeout=timeout)
 # ERROR - unexpected keyword argument
 # TODO - verify
 
-# setting the mem_limit does not show up expected results on `docker inspect`
-# and it runs the entire code, whereas, 
-# `docker run -i -m=mem_limit docker-skimage python` works.
-# will have to confirm with Joffrey if it even works.
+# the code in sample_code returns in kilobytes.
+# mem_limit accepts values in bytes, for ex - this container has 5 MB
 container = c.create_container(image, command='python', hostname=None, user=None,
-                   detach=False, stdin_open=True, tty=False, mem_limit='1000k',
+                   detach=False, stdin_open=True, tty=False, mem_limit=5242880,
                    ports=None, environment=None, dns=None, volumes=None,
                    volumes_from=None, network_disabled=False, name=None,
                    entrypoint=None, cpu_shares=None, working_dir=None,)
