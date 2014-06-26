@@ -114,7 +114,11 @@ handle = subprocess.Popen(['docker', 'attach', container_id], stdin=subprocess.P
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
 
 # Separate STDOUT and STDERR
-out, err = handle.communicate(empty_code);
+# Test simple printing (standalone python)
+# out, err = handle.communicate(empty_code);
+
+# Test scikit-image example
+out, err = handle.communicate(sample_code_file);
 
 print out, err
 
