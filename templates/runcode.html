@@ -1,19 +1,82 @@
 <!doctype html>
-<html>
-	<head> 
+<html lang="en">
+	<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <title>Run Code</title>
         <script type=text/javascript src="{{ url_for('static', filename='jq-min.js') }}"></script>
         <script type=text/javascript src="{{ url_for('static', filename='submit.js') }}"></script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+        <!-- Holder for placeholding Images -->
+        <script type=text/javascript src="{{ url_for('static', filename='holder.js') }}"></script>
+
 	</head>
     <body>
-        <h2> input: </h2>
-        <textarea id="code" rows="38" cols="100"></textarea>
-        <div id="loading" style="width:100%; height:100%;"><img src="{{ url_for('static', filename='ajax-loader.gif') }}"/></div>
-        <img id="outputimage" src="">
-        <h2> output: </h2>
-        <textarea id="result" rows="5" cols="50"></textarea>
-        <br/>
-        <input id="runcode" type="submit">
+        <div class="container-fluid">
+            <div class="row">
+                <h2 class="text-center"> Testing Code </h2>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="thumbnail">
+                      <img id="originalimage" data-src="holder.js/100%x400/auto/text:Original Image" alt="Original Image">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="thumbnail">
+                      <img id="outputimage" data-src="holder.js/100%x400/auto/text:Output Image" alt="Original Image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1">
+                    <!-- run button -->
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        Examples <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a class="example">Convex Hull</a></li>
+                        <li class="divider"></li>
+                        <li><a class="example">Corner Detection</a></li>
+                      </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div id="loading"><img src="{{ url_for('static', filename='ajax-loader.gif') }}"/></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4> input: </h4>
+                    <textarea id="code" rows="20" cols="80"></textarea>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4> output: </h4>
+                            <textarea id="result" rows="5" cols="50"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="runcode" type="button" class="btn btn-primary btn-sm">Run</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>                
     </body>
 </html>
 

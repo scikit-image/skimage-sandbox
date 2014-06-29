@@ -27,6 +27,8 @@ for file in os.listdir("."):
 fig_manager = """
 dpi = 80
 
+from matplotlib import _pylab_helpers
+
 fig_managers = _pylab_helpers.Gcf.get_all_fig_managers()
 for idx, figman in enumerate(fig_managers):
   figman.canvas.figure.savefig('image{0}.png'.format(idx), dpi=80)

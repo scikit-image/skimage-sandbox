@@ -14,7 +14,9 @@ $(function(){
 		// that needs to be changed
 		for (var key in output){
 			image = output[key];
+			console.log(output)
 			image = imagemeta + image;
+			console.log(image);
 			$('#outputimage').attr('src', image);
 		}
 		$('#result').val("It works!");
@@ -43,4 +45,22 @@ $(function(){
 		    }
 		});
 	});
+
+	$('.example').bind('click', function(){
+		$('#loading').show();
+
+		var example = $(this).html().toLowerCase();
+		example = example.replace(' ', '_');
+
+		var code_url = 'static/examples/plot_' + example + '.py';
+		var example_image = 'static/images/plot_' + example + '.png';
+		
+		$.get(code_url, function(data){
+			$('#code').val(data);
+
+			$('#originalimage').attr('src', example_image).load(function(){
+				$('#loading').hide();
+			});
+		});
+	});	
 });
