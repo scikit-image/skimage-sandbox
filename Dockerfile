@@ -1,4 +1,4 @@
-# DO NOT BUILD, INCONSISTENT CURRENTLY
+# dockerfile
 
 FROM fedora
 
