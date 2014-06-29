@@ -12,9 +12,11 @@ import StringIO
 
 # CONSTANTS
 socket='unix://var/run/docker.sock'
+# Socket for scikit server
+# socket='tcp://192.168.59.103:2375'
 version='1.11'
 timeout=10
-image='docker-skimage'
+image='docker-skimage:1.0'
 
 # code to fetch files written as png
 list_files_code = """import os
@@ -148,7 +150,7 @@ def run_code():
     content = matplotlib_backend + content + fig_manager
     result = dock(content)
 
-    return jsonify(result=result);
+    return jsonify(result=result)
 
 if __name__ == '__main__':
     app.run()
