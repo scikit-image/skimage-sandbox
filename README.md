@@ -11,11 +11,11 @@ You need to be in the root directory of the repository.
 This will build a new image from the official base Fedora image.
 So it may take a while.
 
-After a successful build - `docker images` should list out 'docker-skimage' in the list. 
+After a successful build - `docker images` should list 'docker-skimage'. 
 
-To start the server, run `python start.py`, it should print the URL of the server
+To start the server -> `python start.py`, it should print the URL of the server
 Default is 'http://127.0.0.1:5000/'.
-Opening this URL in the browser should open a page which says "The server is up!".
+Opening this URL in the browser should open a page with "The server is up!".
 Point to 'http://127.0.0.1:5000/code' to open the interface.
 
 Some basic logging is enabled.
