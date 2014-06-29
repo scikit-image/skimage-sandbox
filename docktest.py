@@ -95,10 +95,12 @@ for file in os.listdir("."):
 
 # CONSTANTS
 socket='unix://var/run/docker.sock'
+# For the server online
+# socket='tcp://192.168.59.103:2375'
 version='1.11'
 timeout=10
 # image='fedora'
-image='docker-skimage'
+image='docker-skimage:1.0'
 
 # DEBUG 
 # print "Create Client"
@@ -133,7 +135,7 @@ handle = subprocess.Popen(['docker', 'attach', container_id], stdin=subprocess.P
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
 
 # Separate STDOUT and STDERR
-out, err = handle.communicate(sample_code_file);
+out, err = handle.communicate(sample_code);
 
 print out
 
