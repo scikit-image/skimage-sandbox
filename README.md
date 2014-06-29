@@ -6,8 +6,9 @@ Stuff you need to have preinstalled -
 
 An install of Flask in the virtualenv works fine too.
 
-Use the following command to build the Dockerfile -> `docker build -t docker-skimage:1.0 .`
-You need to be in the root directory of the repository. This will build a new image from the official base fedora image.
+To build the, Dockerfile -> `docker build -t docker-skimage:1.0 .`
+You need to be in the root directory of the repository. 
+This will build a new image from the official base Fedora image.
 So it may take a while.
 
 After a successful build - `docker images` should list out 'docker-skimage' in the list. 
