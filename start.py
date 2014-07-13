@@ -43,6 +43,7 @@ matplotlib.use('Agg')
 """
 
 debug = False
+max_output = 100
 
 app = Flask(__name__)
 
@@ -84,13 +85,17 @@ def dock(code):
 			             before=None, limit=-1), '\n'
     # Separate STDOUT and STDERR
     # Done with code execution
-    out, err = handle.communicate(code)
+    stdout, stderr = handle.communicate(code)
+    lines = stdout.split('\n')
+    # some ninja-python
+    stdout = '\n'.join(lines[:max_output]) + '\n...' if len(lines) > max_output else stdout
+    print "stderr", stderr, "lol"
     # Wait for container to finish eecuting code and exit
     exitcode = c.wait(container)
     # DEBUG
     if(debug):
-	print "STDOUT after exec ", out
-        print "STDERR after exec ", err
+	print "STDOUT after exec ", stdout
+        print "STDERR after exec ", stderr
 	print "Containers after execution"
 	print c.containers(quiet=False, all=False, trunc=True, latest=True, since=None,
 			             before=None, limit=-1), '\n'
@@ -148,7 +153,7 @@ def dock(code):
         finally:
           pass
 
-    return fcbase64
+    return fcbase64, stdout, stderr
 
 @app.route('/')
 def home():
@@ -169,10 +174,10 @@ def run_code():
     # force matplotlib to agg and add the figure manager code
     content = matplotlib_backend + content + fig_manager
     if(debug): print content
-    result = dock(content)
+    result, stdout, stderr = dock(content)
     # print "****************result", result
 
-    return jsonify(result=result)
+    return jsonify(result=result, stdout=stdout, stderr=stderr)
 
 if __name__ == '__main__':
     app.run(host='198.206.133.45', debug=True)
