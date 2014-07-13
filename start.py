@@ -9,11 +9,12 @@ import subprocess
 import tarfile
 import StringIO
 
+from cdomain import crossdomain
 
 # CONSTANTS
 socket='unix://var/run/docker.sock'
 # Socket for scikit server
-# socket='tcp://192.168.59.103:2375'
+socket='tcp://192.168.59.103:2375'
 version='1.11'
 timeout=10
 image='docker-skimage:1.0'
@@ -41,6 +42,7 @@ import matplotlib
 matplotlib.use('Agg')
 """
 
+debug = False
 
 app = Flask(__name__)
 
@@ -61,22 +63,37 @@ def dock(code):
         return -1
 
     # DEBUG
-    # print container_id
+    if(debug): print "container_id is ", container_id
 
     start = c.start(container, binds=None, port_bindings=None, lxc_conf=None,
         publish_all_ports=False, links=None, privileged=False,)
+
+    if(debug):
+        print "start handle for container", start
+        print "Container after START, before attach"
+        print c.containers(quiet=False, all=False, trunc=True, latest=True, since=None,
+			             before=None, limit=-1),'\n'
 
     # Attach handles for accessing the child's streams
     handle = subprocess.Popen(['docker', 'attach', container_id], stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
 
+    if(debug):
+	print "Container after ATTACH, before sending code"
+        print c.containers(quiet=False, all=False, trunc=True, latest=False, since=None,
+			             before=None, limit=-1), '\n'
     # Separate STDOUT and STDERR
     # Done with code execution
-    out, err = handle.communicate(code);
+    out, err = handle.communicate(code)
+    # Wait for container to finish eecuting code and exit
+    exitcode = c.wait(container)
     # DEBUG
-    # print "STDOUT after exec ", out
-    # print "STDERR after exec ", err
-
+    if(debug):
+	print "STDOUT after exec ", out
+        print "STDERR after exec ", err
+	print "Containers after execution"
+	print c.containers(quiet=False, all=False, trunc=True, latest=True, since=None,
+			             before=None, limit=-1), '\n'
     ####################################################################################
 
     # Fetch files generated
@@ -89,6 +106,8 @@ def dock(code):
 
     # Separate STDOUT and STDERR
     out, err = handle.communicate(list_files_code);
+    # Wait for container to finish executing code and exit
+    exitcode = c.wait(container)
     # DEBUG
     # print "STDOUT after exec ", out
     # print "STDERR after exec ", err
@@ -140,6 +159,7 @@ def write_code():
     return render_template('runcode.html')
 
 @app.route('/runcode', methods=['POST'])
+@crossdomain(origin='*', headers='Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept')
 def run_code():
     content = request.json['data']
     # DEBUG 
@@ -148,9 +168,11 @@ def run_code():
     # fire up docker
     # force matplotlib to agg and add the figure manager code
     content = matplotlib_backend + content + fig_manager
+    if(debug): print content
     result = dock(content)
+    # print "****************result", result
 
     return jsonify(result=result)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='198.206.133.45', debug=True)
