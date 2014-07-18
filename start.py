@@ -54,7 +54,7 @@ def dock(code):
     container = c.create_container(image, command='python', hostname=None, user=None,
                                 detach=False, stdin_open=True, tty=False, mem_limit=0,
                                 ports=None, environment=None, dns=None, volumes=None,
-                                volumes_from=None, network_disabled=False, name=None,
+                                volumes_from=None, network_disabled=True, name=None,
                                 entrypoint=None, cpu_shares=None, working_dir=None,)
 
     container_id = container.get('Id');
