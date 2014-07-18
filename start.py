@@ -51,7 +51,7 @@ def dock(code):
     c = docker.Client(base_url=socket, version=version, timeout=timeout)
 
     # open STDIN
-    container = c.create_container(image, command='python', hostname=None, user=None,
+    container = c.create_container(image, command='timeout 20 python', hostname=None, user=None,
                                 detach=False, stdin_open=True, tty=False, mem_limit=0,
                                 ports=None, environment=None, dns=None, volumes=None,
                                 volumes_from=None, network_disabled=True, name=None,
@@ -89,17 +89,22 @@ def dock(code):
     lines = stdout.split('\n')
     # some ninja-python
     stdout = '\n'.join(lines[:max_output]) + '\n...' if len(lines) > max_output else stdout
-    print "stderr", stderr, "lol"
     # Wait for container to finish eecuting code and exit
     exitcode = c.wait(container)
     # DEBUG
     if(debug):
 	print "STDOUT after exec ", stdout
         print "STDERR after exec ", stderr
+        print "EXITCODE after exec ", exitcode
 	print "Containers after execution"
 	print c.containers(quiet=False, all=False, trunc=True, latest=True, since=None,
 			             before=None, limit=-1), '\n'
     ####################################################################################
+    # Handle error messages based on exit-code
+    if exitcode != 0:
+        # Code for timeout
+        if exitcode == 124:
+	    stderr = stderr + 'Run-time limit exceeded'
 
     # Fetch files generated
     ## Travel the docker filesystem default directory for files of our interest
