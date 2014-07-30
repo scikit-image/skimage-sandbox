@@ -19,12 +19,13 @@ version='1.11'
 timeout=10
 image='docker-skimage:1.0'
 
-# code to fetch files written as png
-list_files_code = """import os
+# code to fetch files and timestamp written as png
+list_files_code = """import os, datetime
 
 for file in os.listdir("."):
     if file.endswith(".png"):
-        print file;
+        timestamp = str(datetime.datetime.fromtimestamp(os.path.getmtime(file))).split('.')[0]
+        print file, timestamp
 """
 
 fig_manager = """
@@ -114,7 +115,7 @@ def dock(code):
 
 
     # Get list of files, last value is an empty string
-    filelist = out.split('\n')[:-1];
+    filelist = [[i.split(' ')[0], i.split(' ')[1]] for i in out.split('\n')[:-1]]
 
     # dict of UUencoded filecontent to be returned
     # fcencode = {}
@@ -126,7 +127,11 @@ def dock(code):
     import base64
 
     for f in filelist:
-      copy = c.copy(container, f)
+      # first index is the filename, next is the timestamp
+      filename = f[0]
+      timestamp = f[1]
+
+      copy = c.copy(container, filename)
 
       ofile = StringIO.StringIO()
 
@@ -137,12 +142,13 @@ def dock(code):
         except StopIteration:  
           ofile.seek(0)
           tarf = tarfile.TarFile(fileobj=ofile)
-          fcontent = tarf.extractfile(f).read()
+          fcontent = tarf.extractfile(filename).read()
           # DEBUG to check if output is correct before encoding
           # print fcontent
           # UUDECODE is difficult client side, so we go the base64 route
           # fcencode[f] = fcontent.encode("uu")
-          fcbase64[f] = base64.b64encode(fcontent)
+          fcbase64[filename] = base64.b64encode(fcontent)
+          fcbase64[filename + 'timestamp'] = timestamp
           break
 
         finally:
