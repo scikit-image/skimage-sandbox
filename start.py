@@ -128,7 +128,8 @@ def dock(code):
 
 
     # Get list of files, last value is an empty string
-    filelist = [[i.split(' ')[0], i.split(' ')[1]] for i in out.split('\n')[:-1]]
+    filelist = [i.split(' ') for i in out.split('\n')[:-1]]
+    filelist = [[i[0], i[1] + ' ' + i[2]] for i in filelist]
 
     # dict of UUencoded filecontent to be returned
     # fcencode = {}
