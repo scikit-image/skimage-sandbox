@@ -106,6 +106,9 @@ def dock(code):
         # Code for timeout
         if exitcode == 124:
 	    stderr = stderr + 'Run-time limit exceeded'
+        # http://adelqod.blogspot.com/2013/05/error-code-139-on-linux.html
+        elif exitcode == 139:
+            stderr = stderr + 'Segmentation Fault'
 
     # Fetch files generated
     ## Travel the docker filesystem default directory for files of our interest
