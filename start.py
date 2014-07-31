@@ -179,7 +179,8 @@ def write_code():
     return render_template('runcode.html')
 
 @app.route('/runcode', methods=['POST'])
-@crossdomain(origin='*', headers='Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept')
+# @crossdomain(origin='*', headers='Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept')
+@crossdomain(origin='*', headers='Content-Type, X-Requested-With, Accept')
 def run_code():
     content = request.json['data']
     # DEBUG 
