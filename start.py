@@ -211,4 +211,4 @@ def run_code():
     return jsonify(result=result, stdout=stdout, stderr=stderr)
 
 if __name__ == '__main__':
-    app.run(host='198.206.133.45', debug=True)
+    app.run(host='198.206.133.45', debug=True, threaded=True)
