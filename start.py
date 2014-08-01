@@ -6,6 +6,7 @@ from flask import jsonify
 import docker
 
 import subprocess
+from subprocess import PIPE
 import tarfile
 import StringIO
 
@@ -77,8 +78,8 @@ def dock(code):
 			             before=None, limit=-1),'\n'
 
     # Attach handles for accessing the child's streams
-    handle = subprocess.Popen(['docker', 'attach', container_id], stdin=subprocess.PIPE,
-                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+    handle = subprocess.Popen(['docker', 'attach', container_id], stdin=PIPE,
+                        stdout=PIPE, stderr=PIPE,)
 
     if(debug):
 	print "Container after ATTACH, before sending code"
@@ -94,6 +95,8 @@ def dock(code):
     exitcode = c.wait(container)
     # DEBUG
     if(debug):
+        print "code ", code
+        print "Lines are ", stdout, stderr
 	print "STDOUT after exec ", stdout
         print "STDERR after exec ", stderr
         print "EXITCODE after exec ", exitcode
