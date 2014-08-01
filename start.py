@@ -46,11 +46,23 @@ matplotlib.use('Agg')
 
 debug = False
 max_output = 100
+max_queue_size = 5
 
 app = Flask(__name__)
 
+def num_of_containers_running(c=c):
+    return 10
+    c.containers(quiet=True, all=False, trunc=True, latest=False, since=None,
+        before=None, limit=-1)
+
+
 def dock(code):
     c = docker.Client(base_url=socket, version=version, timeout=timeout)
+
+    # check number of containers already running
+    containers_running = num_of_containers_running(c)
+    if (containers_running >= max_queue_size):
+        return {busy: 'True'}, '', ''
 
     # open STDIN
     container = c.create_container(image, command='timeout 20 python', hostname=None, user=None,
