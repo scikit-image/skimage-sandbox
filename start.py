@@ -50,10 +50,10 @@ max_queue_size = 5
 
 app = Flask(__name__)
 
-def num_of_containers_running(c=c):
-    return 10
-    c.containers(quiet=True, all=False, trunc=True, latest=False, since=None,
-        before=None, limit=-1)
+def num_of_containers_running(c):
+    container_data = c.containers(quiet=True, all=False, trunc=True, latest=False, since=None,
+		    before=None, limit=0)
+    return len(container_data)
 
 
 def dock(code):
@@ -62,7 +62,7 @@ def dock(code):
     # check number of containers already running
     containers_running = num_of_containers_running(c)
     if (containers_running >= max_queue_size):
-        return {busy: 'True'}, '', ''
+        return {'busy': 'True'}, '', ''
 
     # open STDIN
     container = c.create_container(image, command='timeout 20 python', hostname=None, user=None,
