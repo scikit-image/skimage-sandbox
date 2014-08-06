@@ -1,0 +1,59 @@
+.. _example_plot_convex_hull.py:
+
+
+===========
+Convex Hull
+===========
+
+The convex hull of a binary image is the set of pixels included in the
+smallest convex polygon that surround all white pixels in the input.
+
+In this example, we show how the input pixels (white) get filled in by the
+convex hull (white and grey).
+
+A good overview of the algorithm is given on `Steve Eddin's blog
+<http://blogs.mathworks.com/steve/2011/10/04/binary-image-convex-hull-algorithm-notes/>`__.
+
+
+.. image:: images/plot_convex_hull_1.png
+    :align: center
+
+
+.. raw:: html
+
+    <p>
+        <button type="button" class="btn btn-default btn-lg" id="editcode">
+            <i class="icon-edit"></i> Edit
+        </button>
+        <button type="button" class="btn btn-default btn-lg" id="runcode">
+            <i class="icon-play"></i> Run
+        </button>
+        <button type="button" class="btn btn-default btn-lg" id="reload">
+            <i class="icon-refresh"></i>
+        </button>
+        <div id="loading"><img src="../_static/ajax-loader.gif"/></div>
+        <div class="alert alert-success" id="success-message"></div>
+        <div class="alert alert-error" id="error-message"></div>
+        <div class="all-output">
+            <i class="icon-info-sign"></i> <u>STDOUT</u>
+            <pre id="stdout"></pre>
+            <hr>
+            <i class="icon-remove-sign"></i> <u>STDERR</u>
+            <pre id="stderr"></pre>
+            <hr>
+        </div>
+    </p>
+
+.. literalinclude:: plot_convex_hull.py
+    :lines: 16-
+
+
+
+**Python source code:** :download:`download <plot_convex_hull.py>`
+(generated using ``skimage`` |version|)
+
+
+
+**IPython Notebook:** :download:`download <./notebook/plot_convex_hull.ipynb>`
+(generated using ``skimage`` |version|)
+
