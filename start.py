@@ -20,7 +20,7 @@ socket='unix://var/run/docker.sock'
 socket='tcp://192.168.59.103:2375'
 version='1.11'
 timeout=10
-image='docker-skimage:1.0'
+image='docker-skimage:1.1'
 
 # code to fetch files and timestamp written as png
 list_files_code = """import os, datetime
@@ -42,8 +42,8 @@ for idx, figman in enumerate(fig_managers):
 """
 
 matplotlib_backend = """
-import matplotlib
-matplotlib.use('Agg')
+# import matplotlib
+# matplotlib.use('Agg')
 """
 
 debug = False
@@ -210,7 +210,7 @@ def run_code():
     result, stdout, stderr = dock(content)
     # print "****************result", result
     timestamp = time.time()
-    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    timestamp = datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
     return jsonify(result=result, stdout=stdout, stderr=stderr, timestamp=timestamp)
 
 if __name__ == '__main__':
