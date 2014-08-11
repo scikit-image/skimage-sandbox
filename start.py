@@ -9,6 +9,8 @@ import subprocess
 from subprocess import PIPE
 import tarfile
 import StringIO
+import time
+import datetime
 
 from cdomain import crossdomain
 
@@ -207,8 +209,9 @@ def run_code():
     if(debug): print content
     result, stdout, stderr = dock(content)
     # print "****************result", result
-
-    return jsonify(result=result, stdout=stdout, stderr=stderr)
+    timestamp = time.time()
+    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    return jsonify(result=result, stdout=stdout, stderr=stderr, timestamp=timestamp)
 
 if __name__ == '__main__':
-    app.run(host='198.206.133.45', debug=True, threaded=True)
+    app.run(host='198.206.133.45', port=8000, debug=True, threaded=True)
