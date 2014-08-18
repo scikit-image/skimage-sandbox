@@ -13,14 +13,7 @@ import time
 import datetime
 
 from cdomain import crossdomain
-
-# CONSTANTS
-socket='unix://var/run/docker.sock'
-# Socket for scikit server
-socket='tcp://192.168.59.103:2375'
-version='1.11'
-timeout=10
-image='docker-skimage:1.1'
+from config import *
 
 # code to fetch files and timestamp written as png
 list_files_code = """import os, datetime
@@ -45,10 +38,6 @@ matplotlib_backend = """
 # import matplotlib
 # matplotlib.use('Agg')
 """
-
-debug = False
-max_output = 100
-max_queue_size = 5
 
 app = Flask(__name__)
 
@@ -87,8 +76,8 @@ def dock(code):
 
     if(debug):
         print "start handle for container", start
-        print "Container after START, before attach"
-        print c.containers(quiet=False, all=False, trunc=True, latest=True, since=None,
+        print "Container list after START, before attach"
+        print c.containers(quiet=False, all=False, trunc=True, latest=False, since=None,
 			             before=None, limit=-1),'\n'
 
     # Attach handles for accessing the child's streams
@@ -96,11 +85,11 @@ def dock(code):
                         stdout=PIPE, stderr=PIPE,)
 
     if(debug):
-	print "Container after ATTACH, before sending code"
+	    print "Container list after ATTACH, before sending code"
         print c.containers(quiet=False, all=False, trunc=True, latest=False, since=None,
 			             before=None, limit=-1), '\n'
-    # Separate STDOUT and STDERR
-    # Done with code execution
+
+    # Send code for execution, separate STDOUT and STDERR
     stdout, stderr = handle.communicate(code)
     lines = stdout.split('\n')
     # some ninja-python
@@ -110,19 +99,18 @@ def dock(code):
     # DEBUG
     if(debug):
         print "code ", code
-        print "Lines are ", stdout, stderr
-	print "STDOUT after exec ", stdout
-        print "STDERR after exec ", stderr
         print "EXITCODE after exec ", exitcode
-	print "Containers after execution"
-	print c.containers(quiet=False, all=False, trunc=True, latest=True, since=None,
+	    print "STDOUT after exec ", stdout
+        print "STDERR after exec ", stderr
+    	print "Containers after execution"
+    	print c.containers(quiet=False, all=False, trunc=True, latest=False, since=None,
 			             before=None, limit=-1), '\n'
     ####################################################################################
     # Handle error messages based on exit-code
     if exitcode != 0:
         # Code for timeout
         if exitcode == 124:
-	    stderr = stderr + 'Run-time limit exceeded'
+	       stderr = stderr + 'Run-time limit exceeded'
         # http://adelqod.blogspot.com/2013/05/error-code-139-on-linux.html
         elif exitcode == 139:
             stderr = stderr + 'Segmentation Fault'
@@ -140,8 +128,9 @@ def dock(code):
     # Wait for container to finish executing code and exit
     exitcode = c.wait(container)
     # DEBUG
-    # print "STDOUT after exec ", out
-    # print "STDERR after exec ", err
+    if (debug):
+        print "List of files returned in STDOUT ", out
+        print "STDERR after exec ", err
 
 
     # Get list of files, last value is an empty string
@@ -149,12 +138,13 @@ def dock(code):
     filelist = [[i[0], i[1] + ' ' + i[2]] for i in filelist]
 
     # dict of UUencoded filecontent to be returned
+    # UUDECODE is difficult client side, so we go the base64 route
     # fcencode = {}
 
     # dict of base64 converted filecontent to be returned
     fcbase64 = {}
 
-    # Iterate for all files in the list
+    # iterate for all files in the list
     import base64
 
     for f in filelist:
@@ -179,6 +169,7 @@ def dock(code):
           # UUDECODE is difficult client side, so we go the base64 route
           # fcencode[f] = fcontent.encode("uu")
           fcbase64[filename] = base64.b64encode(fcontent)
+          # add file creation timestamp
           fcbase64[filename + 'timestamp'] = timestamp
           break
 
@@ -214,4 +205,4 @@ def run_code():
     return jsonify(result=result, stdout=stdout, stderr=stderr, timestamp=timestamp)
 
 if __name__ == '__main__':
-    app.run(host='198.206.133.45', port=8000, debug=True, threaded=True)
+    app.run(host=hostip, port=port, debug=True, threaded=threaded)
