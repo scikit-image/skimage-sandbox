@@ -85,7 +85,7 @@ def dock(code):
                         stdout=PIPE, stderr=PIPE,)
 
     if(debug):
-	    print "Container list after ATTACH, before sending code"
+	print "Container list after ATTACH, before sending code"
         print c.containers(quiet=False, all=False, trunc=True, latest=False, since=None,
 			             before=None, limit=-1), '\n'
 
@@ -100,7 +100,7 @@ def dock(code):
     if(debug):
         print "code ", code
         print "EXITCODE after exec ", exitcode
-	    print "STDOUT after exec ", stdout
+	print "STDOUT after exec ", stdout
         print "STDERR after exec ", stderr
     	print "Containers after execution"
     	print c.containers(quiet=False, all=False, trunc=True, latest=False, since=None,
@@ -110,7 +110,7 @@ def dock(code):
     if exitcode != 0:
         # Code for timeout
         if exitcode == 124:
-	       stderr = stderr + 'Run-time limit exceeded'
+	    stderr = stderr + 'Run-time limit exceeded'
         # http://adelqod.blogspot.com/2013/05/error-code-139-on-linux.html
         elif exitcode == 139:
             stderr = stderr + 'Segmentation Fault'
