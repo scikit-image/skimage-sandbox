@@ -31,7 +31,7 @@ This also prints the current URL at which it is running. All left to do now is s
 
 ## Sample Demo
 
-Here is a very minimalist demo. 
+[Here](http://sharky93.github.io/demo/) is a very minimalist demo. 
 
 I'll try to explain some of the interactions taking place here. Obviously a lot more can be achieved as desired. See the [interactive gallery](http://sharky93.github.io/docs/gallery/auto_examples/) ;)
 
