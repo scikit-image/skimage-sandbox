@@ -28,3 +28,6 @@ port = 8000
 
 # ip address at which the service exists
 hostip = '198.206.133.45'
+
+threaded = True
+
