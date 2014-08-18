@@ -17,7 +17,7 @@ Get the latest copy on your server
 
 Docker works on the concept of [images](https://docs.docker.com/terms/image/#base-image-def) and [containers](http://docs.docker.com/terms/container/) and a [Dockerfile](http://docs.docker.com/reference/builder/) is what is usually used to build the image
 
-The [Dockerfile](http://docs.docker.com/reference/builder/) provided with the repository helps one build an [image](https://docs.docker.com/terms/image/#base-image-def) which caters to running code which uses the scikit-image library. Basically installs all the dependencies on top of the base image. This started as an attempt to setup an interactive gallery for examples @ [scikit-image](http://scikit-image.org/), remember?
+The [Dockerfile](http://docs.docker.com/reference/builder/) provided with the repository helps one build an [image](https://docs.docker.com/terms/image/#base-image-def) which caters to running code which uses the scikit-image library. Basically installs all the dependencies on top of the base image so that it can run running scikit-image code
 
 Building the image - `docker build -t docker-skimage:1.0 .`
 
