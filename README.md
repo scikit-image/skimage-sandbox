@@ -5,7 +5,7 @@ It was born as a result of a project to setup an interactive gallery for example
 
 This is live here @ [interactive gallery for scikit-image examples](http://sharky93.github.io/docs/gallery/auto_examples/)
 
-## Setting it up
+## Setup
 
 Get the latest copy on your server
 `git clone https://github.com/scikit-image/skimage-docker/`
