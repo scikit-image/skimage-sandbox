@@ -152,7 +152,7 @@ $.ajax({
 
 For exact function definitions please refer to the demo
 
-## Sample Demo
+## Demo
 
 [Here](http://sharky93.github.io/demo/index_min.html) is a very minimalist demo.
 
