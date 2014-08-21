@@ -71,7 +71,7 @@ We use Ace to support the editing of code and the jQuery library for certain bas
 <script type="text/javascript" src="./static/demo_min.js"></script>
 <script type="text/javascript" src="http://cdn.jsdelivr.net/ace/1.1.3/min/ace.js"></script>
 ```
-We put all the custom JS needed to make the site funciont in `demo_min.js`.
+We put all the custom JS needed to make the site function in `demo_min.js`.
 
 
 **Edit** - Extracts the `base64` encoded string, decodes and calls the `editcode` function which takes as input the code snippet.
