@@ -41,7 +41,7 @@ There are some major components which interact for the demo to work properly.
 Similarly if the code generated something on `STDOUT` or `STDERR`, it is received as part of the response and is inserted appropriately
 
 
-For **setting up the front-end** start with a basic HTML page with buttons for "Edit", "Reload", "Run" along with an area for the code to exist and one for the output we've used `<pre>` and `<div>` in the example. The `body` looks something like this :
+For **setting up the front-end** start with a basic HTML page with buttons for `Edit`, `Reload`, `Run` along with an area for the code to exist and one for the output we've used `<pre>` and `<div>` in the example. The `body` looks something like this :
 
 ```	  
 <button type="button" class="editcode">Edit</button>
@@ -74,8 +74,7 @@ We use Ace to support the editing of code and the jQuery library for certain bas
 We put all the custom JS needed to make the site funciont in `demo_min.js`.
 
 
-**Edit**
-Extracts the `base64` encoded string, decodes and calls the `editcode` function which takes as input the code snippet.
+**Edit** - Extracts the `base64` encoded string, decodes and calls the `editcode` function which takes as input the code snippet.
 ```
 $('.editcode').bind('click', function () {
   var snippet = encodedcode.html();
@@ -155,9 +154,9 @@ For exact function definitions please refer to the demo
 
 ## Sample Demo
 
-[Here](http://sharky93.github.io/demo_min/) is a very minimalist demo.
+[Here](http://sharky93.github.io/demo/index_min.html) is a very minimalist demo.
 
-[This](http://sharky93.github.io/demo/) is a spruced up version with more features and better style, such as
-clicking anywhere inside the code snippet region invokes the editor, Pressing `Shift+Enter` runs the code
+[Here](http://sharky93.github.io/demo/) is a spruced up version with more features such as
+clicking anywhere inside the code snippet region invokes the editor, pressing `Shift+Enter` runs the code and better style.
 
 Obviously a lot more can be achieved as desired. See the [interactive gallery](http://sharky93.github.io/docs/gallery/auto_examples/) ;)
