@@ -41,7 +41,7 @@ There are some major components which interact for the demo to work properly.
 Similarly if the code generated something on `STDOUT` or `STDERR`, it is received as part of the response and is inserted appropriately
 
 
-For **setting up a minimal front-end** start with a basic HTML page with a button for `Run` along with an area for the code to exist and one for the output we've used `<textarea>` and `<div>` in the example. The `body` looks something like this :
+For **setting up a minimal front-end** start with a basic HTML page with a button for `Run` along with an area for the code to exist and one for the output we've used `<textarea>` and `<div>` in the minimal example. The `body` looks something like this :
 
 Other components namely `Edit` and `Revert` are covered in the spruced up version
 
