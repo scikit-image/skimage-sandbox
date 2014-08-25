@@ -109,17 +109,17 @@ $.ajax({
 
 `handleoutput` - TODO
 
-For exact function definitions please refer to the demo source [here](https://github.com/sharky93/sharky93.github.io/tree/master/demo)
-
 ## Demo
 
-[Here](http://sharky93.github.io/demo/index_min.html) is a very minimalist demo.
+[Here](http://sharky93.github.io/demo/index_min.html) is a very minimalist demo
 
 [Here](http://sharky93.github.io/demo/) is a spruced up version with more features, it uses the `Ace` editor for editing the code, clicking anywhere inside the code snippet region invokes the editor, pressing `Shift+Enter` runs the code, has the function to `Reload` the original code snippet
 
-Some explanation about **features** from the spruced up demo.
+Code used for the demo is here [here](https://github.com/sharky93/sharky93.github.io/tree/master/demo)
 
-**Edit** - Extracts the `base64` encoded string, decodes and calls the `editcode` function which takes as input the code snippet.
+Some explanation about **features** from the spruced up demo
+
+**Edit** - Extracts the `base64` encoded string, decodes and calls the `editcode` function which takes as input the code snippet
 ```
 $('.editcode').bind('click', function () {
   var snippet = encodedcode.html();
@@ -131,7 +131,7 @@ $('.editcode').bind('click', function () {
 });
 ```
 
-The `editcode` function initializes the `Ace` editor and loads the snippet inside it, sets the mode as `Python`. We attach a handler to the editor which on `change`, changes the height of the editor making it resizable with content.
+The `editcode` function initializes the `Ace` editor and loads the snippet inside it, sets the mode as `Python`. We attach a handler to the editor which on `change`, changes the height of the editor making it resizable with content
 ```
 editor = ace.edit("editor");
 
@@ -155,6 +155,6 @@ editor.getSession().setMode("ace/mode/python");
 
 Obviously a lot more can be achieved as desired. See the [interactive gallery](http://sharky93.github.io/docs/gallery/auto_examples/) ;)
 
-### Configuration
+## Configuration
 [config.py](https://github.com/scikit-image/skimage-docker/blob/master/config.py) has a few basic parameters defined which can be used to customize the server setup
 
