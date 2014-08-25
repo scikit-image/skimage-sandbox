@@ -115,7 +115,7 @@ $.ajax({
 
 [Here](http://sharky93.github.io/demo/) is a spruced up version with more features, it uses the `Ace` editor for editing the code, clicking anywhere inside the code snippet region invokes the editor, pressing `Shift+Enter` runs the code, has the function to `Reload` the original code snippet
 
-Code used for the demo is here [here](https://github.com/sharky93/sharky93.github.io/tree/master/demo)
+[Here](https://github.com/sharky93/sharky93.github.io/tree/master/demo) is the code used in the demo
 
 Some explanation about **features** from the spruced up demo
 
