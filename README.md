@@ -41,15 +41,16 @@ There are some major components which interact for the demo to work properly.
 Similarly if the code generated something on `STDOUT` or `STDERR`, it is received as part of the response and is inserted appropriately
 
 
-For **setting up the front-end** start with a basic HTML page with buttons for `Edit`, `Reload`, `Run` along with an area for the code to exist and one for the output we've used `<pre>` and `<div>` in the example. The `body` looks something like this :
+For **setting up the minimal front-end** start with a basic HTML page with a button for `Run` along with an area for the code to exist and one for the output we've used `<textarea>` and `<div>` in the example. The `body` looks something like this :
+
+Other components namely `Edit` and `Revert` are covered in the spruced up version
 
 ```	  
 <button type="button" class="editcode">Edit</button>
-<pre>
+<textarea>
   code here
-</pre>
+</textarea>
 <button type="button" class="runcode"> Run </button>
-<button type="button" class="reload"> Reload </button>
 
 <div id="success-message"></div>
 <div id="error-message"></div>
@@ -61,18 +62,62 @@ For **setting up the front-end** start with a basic HTML page with buttons for `
 </p>
 <pre id="stderr"></pre>
 <hr class="stderr-group">
-
-<div class="tobehidden"> base64_encoded_version_of_code </div>
 ```
+[Source](https://github.com/sharky93/sharky93.github.io/blob/master/demo/index_min.html)
 
-We use Ace to support the editing of code and the jQuery library for certain basic operations, add the following to `head` to include them.
+We use the jQuery library for certain basic operations, add the following to `head` to include them.
 ```
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="./static/demo_min.js"></script>
-<script type="text/javascript" src="http://cdn.jsdelivr.net/ace/1.1.3/min/ace.js"></script>
 ```
-We put all the custom JS needed to make the site function in `demo_min.js`.
+We put all the custom JS needed to make the site function in `demo_min.js` available [here](https://github.com/sharky93/sharky93.github.io/blob/master/demo/static/demo_min.js)
 
+
+**Run** - define the `runcode` function. It removes all output from previous runs, fetches code from the **textarea** - `getcode()`, converts it to a legible JSON format and sends an AJAX request to the server and defines handlers for the success and failure case.
+```
+$.ajax({
+    type: 'POST',
+    // Provide correct Content-Type, so that Flask will know how to process it.
+    contentType: 'application/json',
+    // Encode your data as JSON.
+    data: jcode,
+    // This is the type of data you're expecting back from the server.
+    dataType: 'json',
+    url: 'http://ci.scipy.org:8000/runcode',
+    success: function (e) {
+        // remove animation, show Run
+        $('.loading').hide();
+        
+        handleoutput(e);
+        
+        $('#success-message').html("Success: " + e.timestamp + " UTC -5").show();
+        code_running = false;
+    },
+    error: function (jqxhr, text_status, error_thrown) {
+        $('.loading').hide();
+
+        error_code = jqxhr.status;
+        error_text = jqxhr.statusText;
+
+        var error_message = 
+        $('#error-message').html("Code " + error_code + " " + error_text).show();
+        code_running = false;
+    }
+});
+```
+[Link](https://github.com/sharky93/sharky93.github.io/blob/master/demo/static/demo_min.js#L56) to function
+
+`handleoutput` - TODO
+
+For exact function definitions please refer to the demo source [here](https://github.com/sharky93/sharky93.github.io/tree/master/demo)
+
+## Demo
+
+[Here](http://sharky93.github.io/demo/index_min.html) is a very minimalist demo.
+
+[Here](http://sharky93.github.io/demo/) is a spruced up version with more features, it uses the `Ace` editor for editing the code, clicking anywhere inside the code snippet region invokes the editor, pressing `Shift+Enter` runs the code, has the function to `Reload` the original code snippet
+
+Some explanation about **features** from the spruced up demo.
 
 **Edit** - Extracts the `base64` encoded string, decodes and calls the `editcode` function which takes as input the code snippet.
 ```
@@ -108,55 +153,5 @@ editor.setValue(snippet, 1);
 editor.getSession().setMode("ace/mode/python");
 ```
 
-**Run** - define the `runcode` function. It removes all output from previous runs, fetches code from the editor - `getcode()`, converts it to a legible JSON format and sends an AJAX request to the server and defines handlers for the success and failure case.
-```
-$.ajax({
-    type: 'POST',
-    // Provide correct Content-Type, so that Flask will know how to process it.
-    contentType: 'application/json',
-    // Encode your data as JSON.
-    data: jcode,
-    // This is the type of data you're expecting back from the server.
-    dataType: 'json',
-    url: 'http://ci.scipy.org:8000/runcode',
-    success: function (e) {
-        // enable editing after response
-        editor.setReadOnly(false);
-        // remove animation, show Run
-        $('.loading').hide();
-        
-        handleoutput(e);
-        
-        $('#success-message').html("Success: " + e.timestamp + " UTC -5").show();
-        code_running = false;
-    },
-    error: function (jqxhr, text_status, error_thrown) {
-        // enable editing after response
-        editor.setReadOnly(false);
-
-        $('.loading').hide();
-
-        error_code = jqxhr.status;
-        error_text = jqxhr.statusText;
-
-        var error_message = 
-        $('#error-message').html("Code " + error_code + " " + error_text).show();
-        code_running = false;
-    }
-});
-```
-
-`handleoutput` - TODO
-
-`reload` - TODO
-
-For exact function definitions please refer to the demo
-
-## Demo
-
-[Here](http://sharky93.github.io/demo/index_min.html) is a very minimalist demo.
-
-[Here](http://sharky93.github.io/demo/) is a spruced up version with more features such as
-clicking anywhere inside the code snippet region invokes the editor, pressing `Shift+Enter` runs the code and better style.
-
 Obviously a lot more can be achieved as desired. See the [interactive gallery](http://sharky93.github.io/docs/gallery/auto_examples/) ;)
+
