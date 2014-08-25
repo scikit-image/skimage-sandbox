@@ -41,7 +41,7 @@ There are some major components which interact for the demo to work properly.
 Similarly if the code generated something on `STDOUT` or `STDERR`, it is received as part of the response and is inserted appropriately
 
 
-For **setting up the minimal front-end** start with a basic HTML page with a button for `Run` along with an area for the code to exist and one for the output we've used `<textarea>` and `<div>` in the example. The `body` looks something like this :
+For **setting up a minimal front-end** start with a basic HTML page with a button for `Run` along with an area for the code to exist and one for the output we've used `<textarea>` and `<div>` in the example. The `body` looks something like this :
 
 Other components namely `Edit` and `Revert` are covered in the spruced up version
 
@@ -105,7 +105,7 @@ $.ajax({
     }
 });
 ```
-[Link](https://github.com/sharky93/sharky93.github.io/blob/master/demo/static/demo_min.js#L56) to function
+[Source](https://github.com/sharky93/sharky93.github.io/blob/master/demo/static/demo_min.js#L56)
 
 `handleoutput` - TODO
 
@@ -154,4 +154,7 @@ editor.getSession().setMode("ace/mode/python");
 ```
 
 Obviously a lot more can be achieved as desired. See the [interactive gallery](http://sharky93.github.io/docs/gallery/auto_examples/) ;)
+
+### Configuration
+[config.py](https://github.com/scikit-image/skimage-docker/blob/master/config.py) has a few basic parameters defined which can be used to customize the server setup
 
